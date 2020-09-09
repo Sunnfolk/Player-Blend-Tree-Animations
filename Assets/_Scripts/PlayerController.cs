@@ -8,6 +8,7 @@ public class PlayerController : MonoBehaviour
     // This allows us to change the variable at runtime 
     [SerializeField] private float _speed = 5f;
 
+    // A Vector variable contains several floats bound to X, Y and Z: A Vector2 only has X & Y
     private Vector2 _moveVector;
 
     private Animator _animator;
@@ -27,14 +28,18 @@ public class PlayerController : MonoBehaviour
         _moveVector.x = Input.GetAxisRaw("Horizontal");
         _moveVector.y = Input.GetAxisRaw("Vertical");
 
+        // If there is any input, run the animation code
         if (_moveVector != Vector2.zero)
 		{
+            // Sets the animator parametres to be equal Player Input.
             _animator.SetFloat("Horizontal", _moveVector.x);
             _animator.SetFloat("Vertical", _moveVector.y);
+            // Switch between Idle & Walking
             _animator.SetBool("isWalking", true);
 		}
 		else { _animator.SetBool("isWalking", false); }
 		
+        // If we are moving on the X axis, flip the player to face the correct way.
 		if (_moveVector.x != 0f)
 		{
             // Flips the Object - useful for shooting
