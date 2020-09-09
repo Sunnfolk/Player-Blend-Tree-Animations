@@ -8,8 +8,6 @@ public class PlayerController : MonoBehaviour
     // This allows us to change the variable at runtime 
     [SerializeField] private float _speed = 5f;
 
-    private float _xMove = 0f;
-    private float _yMove = 0f;
     private Vector2 _moveVector;
 
     private Animator _animator;
@@ -26,27 +24,24 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         // Fetch the Raw input from our Movement Axis (-1 to 1)
-        _xMove = Input.GetAxisRaw("Horizontal");
-        _yMove = Input.GetAxisRaw("Vertical");
-
-        // Combine the input data into one Vector
-        _moveVector = new Vector2(_xMove, _yMove);
+        _moveVector.x = Input.GetAxisRaw("Horizontal");
+        _moveVector.y = Input.GetAxisRaw("Vertical");
 
         if (_moveVector != Vector2.zero)
 		{
-            _animator.SetFloat("Horizontal", _xMove);
-            _animator.SetFloat("Vertical", _yMove);
+            _animator.SetFloat("Horizontal", _moveVector.x);
+            _animator.SetFloat("Vertical", _moveVector.y);
             _animator.SetBool("isWalking", true);
 		}
 		else { _animator.SetBool("isWalking", false); }
 		
-		if (_xMove != 0f)
+		if (_moveVector.x != 0f)
 		{
             // Flips the Object - useful for shooting
-            transform.localScale = new Vector2(_xMove, 1f);
+            transform.localScale = new Vector2(_moveVector.x, 1f);
             
             // Flips just the sprite
-            _spriteRenderer.flipX = (_xMove < 0) ? true : false;
+            //_spriteRenderer.flipX = (_moveVector.x < 0) ? true : false;
 		}
     }
     void FixedUpdate()
